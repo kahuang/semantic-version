@@ -27,7 +27,7 @@ const cmd = async (command, ...args) => {
   return output;
 };
 
-const setOutput = (major, minor, patch, increment, changed, branch, namespace) => {
+const setOutput = (major, minor, patch, increment, changed, branch, namespace, setTag) => {
   const format = core.getInput('format', { required: true });
   var version = format
     .replace('${major}', major)
@@ -68,6 +68,20 @@ const setOutput = (major, minor, patch, increment, changed, branch, namespace) =
   core.setOutput("changed", changed.toString());
   core.setOutput("version_tag", tag);
 
+  if (setTag) {
+      await cmd(
+        'git',
+        `tag`,
+        `${tag}`,
+      );
+
+      await cmd(
+        'git',
+        `push`,
+        `origin`,
+        `${tag}`,
+      );
+  }
 };
 
 const parseVersion = (tag) => {
@@ -109,7 +123,7 @@ async function run() {
 
     if (lastCommitAll === '') {
       // empty repo
-      setOutput('0', '0', '0', '0', changed, branch, namespace);
+      setOutput('0', '0', '0', '0', changed, branch, namespace, false);
       return;
     }
 
@@ -119,7 +133,7 @@ async function run() {
 
     if (currentTag) {
       [major, minor, patch] = parseVersion(currentTag);
-      setOutput(major, minor, patch, 0, false, branch, namespace);
+      setOutput(major, minor, patch, 0, false, branch, namespace, false);
       return;
     }
 
@@ -196,7 +210,7 @@ async function run() {
       patch++;
     }
 
-    setOutput(major, minor, patch, increment, changed, branch, namespace);
+    setOutput(major, minor, patch, increment, changed, branch, namespace, true);
 
   } catch (error) {
     core.error(error);
