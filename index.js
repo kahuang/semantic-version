@@ -60,7 +60,7 @@ const setOutput = (major, minor, patch, increment, changed, branch, namespace, s
     core.info(`To create a release for this version, go to https://github.com/${repository}/releases/new?tag=${tag}&target=${branch.split('/').reverse()[0]}`);
   }
   
-  if (setTag) {
+  if (setTag || true) {
       core.info(`Setting version tag: ${version}`);
       await cmd(
         'git',
