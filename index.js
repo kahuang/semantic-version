@@ -55,27 +55,26 @@ const setOutput = (major, minor, patch, increment, changed, branch, namespace, s
     core.info('No changes detected for this commit');
   }
 
+  core.info(`SetTag: ${setTag}`);
   core.info(`Version is ${major}.${minor}.${patch}+${increment}`);
   if (repository !== undefined && !namespace) {
     core.info(`To create a release for this version, go to https://github.com/${repository}/releases/new?tag=${tag}&target=${branch.split('/').reverse()[0]}`);
   }
   
-  if (setTag || true) {
-      core.info(`Setting version tag: ${version}`);
-      await cmd(
-        'git',
-        `tag`,
-        `${version}`,
-      );
+  core.info(`Setting version tag: ${version}`);
+  await cmd(
+      'git',
+      `tag`,
+      `${version}`,
+  );
 
-      core.info(`Pushing version tag: ${version}`);
-      await cmd(
+  core.info(`Pushing version tag: ${version}`);
+  await cmd(
         'git',
         `push`,
         `origin`,
         `${version}`,
-      );
-  }
+  );
 
   core.setOutput("version", version);
   core.setOutput("major", major.toString());
