@@ -1,4 +1,4 @@
-name: "Git Semantic Version"
+name: "Quill Git Semantic Version"
 description: "Determines version of a repo based on git history"
 branding:
   icon: "layers"

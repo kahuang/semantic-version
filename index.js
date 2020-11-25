@@ -69,17 +69,19 @@ const setOutput = (major, minor, patch, increment, changed, branch, namespace, s
   core.setOutput("version_tag", tag);
 
   if (setTag) {
+      core.info(`Setting version tag: ${version}`);
       await cmd(
         'git',
         `tag`,
-        `${tag}`,
+        `${version}`,
       );
 
+      core.info(`Pushing version tag: ${version}`);
       await cmd(
         'git',
         `push`,
         `origin`,
-        `${tag}`,
+        `${version}`,
       );
   }
 };
