@@ -59,15 +59,7 @@ const setOutput = (major, minor, patch, increment, changed, branch, namespace, s
   if (repository !== undefined && !namespace) {
     core.info(`To create a release for this version, go to https://github.com/${repository}/releases/new?tag=${tag}&target=${branch.split('/').reverse()[0]}`);
   }
-
-  core.setOutput("version", version);
-  core.setOutput("major", major.toString());
-  core.setOutput("minor", minor.toString());
-  core.setOutput("patch", patch.toString());
-  core.setOutput("increment", increment.toString());
-  core.setOutput("changed", changed.toString());
-  core.setOutput("version_tag", tag);
-
+  
   if (setTag) {
       core.info(`Setting version tag: ${version}`);
       await cmd(
@@ -84,6 +76,14 @@ const setOutput = (major, minor, patch, increment, changed, branch, namespace, s
         `${version}`,
       );
   }
+
+  core.setOutput("version", version);
+  core.setOutput("major", major.toString());
+  core.setOutput("minor", minor.toString());
+  core.setOutput("patch", patch.toString());
+  core.setOutput("increment", increment.toString());
+  core.setOutput("changed", changed.toString());
+  core.setOutput("version_tag", tag);
 };
 
 const parseVersion = (tag) => {
